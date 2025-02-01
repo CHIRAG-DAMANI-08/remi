@@ -5,7 +5,10 @@ workflows:
     environment:
       node: 18.17.1
       android_signing:
-        - keystore_reference
+        - keystoreFile: remi.keystore
+          keystorePassword: $KEYSTORE_PASSWORD
+          keyAlias: $KEY_ALIAS
+          keyPassword: $KEY_PASSWORD
       groups:
         - google_play
       vars:

@@ -16,7 +16,10 @@ workflows:
           npm install
       - name: Set up keystore
         script: |
+          mkdir -p android
           echo $CM_KEYSTORE | base64 --decode > $CM_BUILD_DIR/keystore.jks
+          mkdir -p "$CM_BUILD_DIR/android"
+          touch "$CM_BUILD_DIR/android/key.properties"
           cat >> "$CM_BUILD_DIR/android/key.properties" << EOF
           storePassword=$CM_KEYSTORE_PASSWORD
           keyPassword=$CM_KEY_PASSWORD

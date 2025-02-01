@@ -22,7 +22,7 @@ export default function Layout() {
             headerShown: false,
           }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="medications/add"
           options={{
             headerShown: false,
@@ -53,7 +53,7 @@ export default function Layout() {
             headerBackTitle: "",
             title: "",
           }}
-        /> */}
+        /> 
       </Stack>
     </>
   );

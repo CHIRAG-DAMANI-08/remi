@@ -53,25 +53,19 @@ export async function scheduleMedicationReminder(
   if (!medication.reminderEnabled) return;
 
   try {
-    // Schedule notifications for each time
     for (const time of medication.times) {
       const [hours, minutes] = time.split(":").map(Number);
-      const today = new Date();
-      today.setHours(hours, minutes, 0, 0);
-
-      // If time has passed for today, schedule for tomorrow
-      if (today < new Date()) {
-        today.setDate(today.getDate() + 1);
-      }
 
       const identifier = await Notifications.scheduleNotificationAsync({
         content: {
           title: "Medication Reminder",
           body: `Time to take ${medication.name} (${medication.dosage})`,
           data: { medicationId: medication.id },
+          sound: true,
+          priority: Notifications.AndroidNotificationPriority.HIGH,
+          channelId: 'default',
         },
         trigger: {
-          type: 'daily',
           hour: hours,
           minute: minutes,
           repeats: true,
@@ -93,15 +87,17 @@ export async function scheduleRefillReminder(
   if (!medication.refillReminder) return;
 
   try {
-    // Schedule a notification when supply is low
     if (medication.currentSupply <= medication.refillAt) {
       const identifier = await Notifications.scheduleNotificationAsync({
         content: {
           title: "Refill Reminder",
           body: `Your ${medication.name} supply is running low. Current supply: ${medication.currentSupply}`,
           data: { medicationId: medication.id, type: "refill" },
+          sound: true,
+          priority: Notifications.AndroidNotificationPriority.HIGH,
+          channelId: 'default',
         },
-        trigger: null, // Show immediately
+        trigger: null,
       });
 
       return identifier;
@@ -138,10 +134,7 @@ export async function updateMedicationReminders(
   medication: Medication
 ): Promise<void> {
   try {
-    // Cancel existing reminders
     await cancelMedicationReminders(medication.id);
-
-    // Schedule new reminders
     await scheduleMedicationReminder(medication);
     await scheduleRefillReminder(medication);
   } catch (error) {

@@ -248,6 +248,7 @@ export default function HomeScreen() {
       ? completedDoses / (todaysMedications.length * 2)
       : 0;
 
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <LinearGradient colors={["#1a8e2d", "#146922"]} style={styles.header}>
@@ -417,6 +418,7 @@ export default function HomeScreen() {
           </View>
         </View>
       </Modal>
+
     </ScrollView>
   );
 }
